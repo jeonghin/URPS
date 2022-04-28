@@ -1,0 +1,730 @@
+---
+title: "Final Result"
+author: "Raphael Jeong-Hin Chin"
+date: "04/14/2022"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
+---
+
+# Libraries
+
+This code chunk should be run if rmd file is opened on a virtual site. 
+
+```{r Installations}
+# install.packages(c("tidyverse","CDM","cdmTools","matlab","reticulate","plotly","foreach","doParallel"))
+```
+
+Libraries used in this rmd file:
+
+```{r Libraries, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(cdmTools)   # estQ, orderQ
+library(CDM)        # gdina
+library(matlab)     # matrix
+library(MASS)       # mvrnorm
+library(reticulate) # python
+library(plotly)     # ggplotly
+```
+
+# Dataset 
+
+Reading in data. 
+
+```{r data, warning=FALSE, message=FALSE}
+filenames <- list.files(pattern="*.csv")
+
+for (i in filenames){
+  assign(i, read.csv(file = i,header = TRUE))
+}
+
+```
+
+<!-- # Aggregating  -->
+
+<!-- Some of the files contain raw data which haven't been aggregated to find the mean -->
+
+<!-- ```{r} -->
+<!-- RBM_Mean_Rho0_03172022.csv <- RBM_Mean_Rho0_03172022.csv %>% group_by(Lambda,Eta) %>% summarise(Similarity = mean(Similarity)) -->
+<!-- RBM_Mean_Rho015_03172022.csv <- RBM_Mean_Rho015_03172022.csv %>% group_by(Lambda,Eta) %>% summarise(Similarity = mean(Similarity)) -->
+<!-- RBM_Mean_Rho025_03172022.csv <- RBM_Mean_Rho025_03172022.csv %>% group_by(Lambda,Eta) %>% summarise(Similarity = mean(Similarity)) -->
+
+<!-- RBM_Mean_N1000_Rho0_03172022.csv <- RBM_Mean_N1000_Rho0_03172022.csv %>% group_by(Lambda,Eta) %>% summarise(Similarity = mean(Similarity)) -->
+<!-- RBM_Mean_N1000_Rho015_03172022.csv <- RBM_Mean_N1000_Rho015_03172022.csv %>% group_by(Lambda,Eta) %>% summarise(Similarity = mean(Similarity)) -->
+<!-- RBM_Mean_N1000_Rho025_03172022.csv <- RBM_Mean_N1000_Rho025_03172022.csv %>% group_by(Lambda,Eta) %>% summarise(Similarity = mean(Similarity)) -->
+<!-- ``` -->
+
+# CDM  {.tabset}
+
+## K = 3  {.tabset}
+
+All simulations were run 50 times
+
+### Lasso  {.tabset}
+
+#### N = 500 
+
+Threshold = 0.1
+
+```{r}
+ggplotly(ggplot() +
+  geom_line(data=CDM_Lasso_Mean_K3_N500_Rho0_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0"))+
+  geom_point(data=CDM_Lasso_Mean_K3_N500_Rho0_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0"))+
+  geom_line(data=CDM_Lasso_Mean_K3_N500_Rho015_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.15"))+
+  geom_point(data=CDM_Lasso_Mean_K3_N500_Rho015_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.15"))+
+  geom_line(data=CDM_Lasso_Mean_K3_N500_Rho025_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.25"))+
+  geom_point(data=CDM_Lasso_Mean_K3_N500_Rho025_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.25"))+
+  geom_line(data=CDM_Lasso_Mean_K3_N500_Rho050_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.5"))+
+  geom_point(data=CDM_Lasso_Mean_K3_N500_Rho050_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.5"))+
+  scale_color_manual(name="Rho", values = c("red","blue","green","purple")) )
+```
+
+#### N = 1000 
+
+Threshold = 0.1
+
+```{r}
+ggplotly(ggplot() +
+  geom_line(data=CDM_Lasso_Mean_K3_N1000_Rho0_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0"))+
+  geom_point(data=CDM_Lasso_Mean_K3_N1000_Rho0_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0"))+
+  geom_line(data=CDM_Lasso_Mean_K3_N1000_Rho015_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.15"))+
+  geom_point(data=CDM_Lasso_Mean_K3_N1000_Rho015_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.15"))+
+  geom_line(data=CDM_Lasso_Mean_K3_N1000_Rho025_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.25"))+
+  geom_point(data=CDM_Lasso_Mean_K3_N1000_Rho025_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.25"))+
+  geom_line(data=CDM_Lasso_Mean_K3_N1000_Rho050_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.5"))+
+  geom_point(data=CDM_Lasso_Mean_K3_N1000_Rho050_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.5"))+
+  scale_color_manual(name="Rho", values = c("red","blue","green","purple")) )
+```
+
+
+#### N = 2000
+
+Threshold = 0.1
+
+```{r}
+ggplotly(ggplot() +
+  geom_line(data=CDM_Lasso_Mean_K3_N2000_Rho0_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0"))+
+  geom_point(data=CDM_Lasso_Mean_K3_N2000_Rho0_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0"))+
+  geom_line(data=CDM_Lasso_Mean_K3_N2000_Rho015_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.15"))+
+  geom_point(data=CDM_Lasso_Mean_K3_N2000_Rho015_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.15"))+
+  geom_line(data=CDM_Lasso_Mean_K3_N2000_Rho025_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.25"))+
+  geom_point(data=CDM_Lasso_Mean_K3_N2000_Rho025_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.25"))+
+  geom_line(data=CDM_Lasso_Mean_K3_N2000_Rho050_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.5"))+
+  geom_point(data=CDM_Lasso_Mean_K3_N2000_Rho050_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.5"))+
+  scale_color_manual(name="Rho", values = c("red","blue","green","purple")) )
+```
+
+
+
+### TLP {.tabset}
+
+#### N = 500
+
+Threshold = 0.1
+
+```{r}
+ggplotly(ggplot()+geom_bar(data = CDM_TLP_Mean_K3_N500_Rho0_t01_04142022.csv,
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Tau)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0"))
+ggplotly(ggplot()+geom_bar(data = CDM_TLP_Mean_K3_N500_Rho015_t01_04142022.csv,
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Tau)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.15"))
+ggplotly(ggplot()+geom_bar(data = CDM_TLP_Mean_K3_N500_Rho025_t01_04142022.csv,
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Tau)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.25"))
+ggplotly(ggplot()+geom_bar(data = CDM_TLP_Mean_K3_N500_Rho050_t01_04142022.csv,
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Tau)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.5"))
+```
+
+
+#### N = 1000
+
+Threshold = 0.1
+
+```{r}
+ggplotly(ggplot()+geom_bar(data = CDM_TLP_Mean_K3_N1000_Rho0_t01_04142022.csv,
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Tau)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0"))
+ggplotly(ggplot()+geom_bar(data = CDM_TLP_Mean_K3_N1000_Rho015_t01_04142022.csv,
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Tau)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.15"))
+ggplotly(ggplot()+geom_bar(data = CDM_TLP_Mean_K3_N1000_Rho025_t01_04142022.csv,
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Tau)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.25"))
+ggplotly(ggplot()+geom_bar(data = CDM_TLP_Mean_K3_N1000_Rho050_t01_04142022.csv,
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Tau)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.5"))
+
+```
+
+#### N = 2000
+
+Threshold = 0.1
+
+```{r}
+ggplotly(ggplot()+geom_bar(data = CDM_TLP_Mean_K3_N2000_Rho0_t01_04142022.csv,
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Tau)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0"))
+ggplotly(ggplot()+geom_bar(data = CDM_TLP_Mean_K3_N2000_Rho015_t01_04142022.csv,
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Tau)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.15"))
+ggplotly(ggplot()+geom_bar(data = CDM_TLP_Mean_K3_N2000_Rho025_t01_04142022.csv,
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Tau)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.25"))
+ggplotly(ggplot()+geom_bar(data = CDM_TLP_Mean_K3_N2000_Rho050_t01_04142022.csv,
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Tau)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.5"))
+
+```
+
+## K = 4 {.tabset}
+
+### Lasso  {.tabset}
+
+#### N = 1000 
+
+Threshold = 0.1
+
+```{r}
+ggplotly(ggplot() +
+  geom_line(data=CDM_Lasso_Mean_K4_N1000_Rho0_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0"))+
+  geom_point(data=CDM_Lasso_Mean_K4_N1000_Rho0_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0"))+
+  geom_line(data=CDM_Lasso_Mean_K4_N1000_Rho015_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.15"))+
+  geom_point(data=CDM_Lasso_Mean_K4_N1000_Rho015_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.15"))+
+  geom_line(data=CDM_Lasso_Mean_K4_N1000_Rho025_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.25"))+
+  geom_point(data=CDM_Lasso_Mean_K4_N1000_Rho025_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.25"))+
+  geom_line(data=CDM_Lasso_Mean_K4_N1000_Rho050_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.5"))+
+  geom_point(data=CDM_Lasso_Mean_K4_N1000_Rho050_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.5"))+
+  scale_color_manual(name="Rho", values = c("red","blue","green","purple")) )
+
+```
+
+#### N = 2000
+
+Threshold = 0.1
+
+```{r}
+ggplotly(ggplot() +
+  geom_line(data=CDM_Lasso_Mean_K4_N2000_Rho0_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0"))+
+  geom_point(data=CDM_Lasso_Mean_K4_N2000_Rho0_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0"))+
+  geom_line(data=CDM_Lasso_Mean_K4_N2000_Rho015_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.15"))+
+  geom_point(data=CDM_Lasso_Mean_K4_N2000_Rho015_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.15"))+
+  geom_line(data=CDM_Lasso_Mean_K4_N2000_Rho025_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.25"))+
+  geom_point(data=CDM_Lasso_Mean_K4_N2000_Rho025_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.25"))+
+  geom_line(data=CDM_Lasso_Mean_K4_N2000_Rho050_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.5"))+
+  geom_point(data=CDM_Lasso_Mean_K4_N2000_Rho050_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.5"))+
+  scale_color_manual(name="Rho", values = c("red","blue","green","purple")) )
+
+```
+
+### TLP {.tabset}
+
+#### N = 1000
+
+Threshold = 0.1
+
+```{r}
+ggplotly(ggplot()+geom_bar(data = CDM_TLP_Mean_K4_N1000_Rho0_t01_04142022.csv,
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Tau)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0"))
+ggplotly(ggplot()+geom_bar(data = CDM_TLP_Mean_K4_N1000_Rho015_t01_04142022.csv,
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Tau)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.15"))
+ggplotly(ggplot()+geom_bar(data = CDM_TLP_Mean_K4_N1000_Rho025_t01_04142022.csv,
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Tau)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.25"))
+ggplotly(ggplot()+geom_bar(data = CDM_TLP_Mean_K4_N1000_Rho050_t01_04142022.csv,
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Tau)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.5"))
+
+```
+
+#### N = 2000
+
+Threshold = 0.1
+
+!!! Rho = 0, 0.25 can't be compiled
+
+```{r}
+
+ggplotly(ggplot()+geom_bar(data = CDM_TLP_Mean_K4_N2000_Rho0_t01_04142022.csv,
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Tau)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.15"))
+ggplotly(ggplot()+geom_bar(data = CDM_TLP_Mean_K4_N2000_Rho015_t01_04142022.csv,
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Tau)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.15"))
+ggplotly(ggplot()+geom_bar(data = CDM_TLP_Mean_K4_N2000_Rho025_t01_04142022.csv,
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Tau)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.5"))
+ggplotly(ggplot()+geom_bar(data = CDM_TLP_Mean_K4_N2000_Rho050_t01_04142022.csv,
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Tau)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.5"))
+
+```
+
+## K = 5 {.tabset}
+
+### Lasso  {.tabset}
+
+#### N = 1000 
+
+Threshold = 0.1
+
+```{r}
+ggplotly(ggplot() +
+  geom_line(data=CDM_Lasso_Mean_K5_N1000_Rho0_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0"))+
+  geom_point(data=CDM_Lasso_Mean_K5_N1000_Rho0_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0"))+
+  geom_line(data=CDM_Lasso_Mean_K5_N1000_Rho015_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.15"))+
+  geom_point(data=CDM_Lasso_Mean_K5_N1000_Rho015_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.15"))+
+  geom_line(data=CDM_Lasso_Mean_K5_N1000_Rho025_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.25"))+
+  geom_point(data=CDM_Lasso_Mean_K5_N1000_Rho025_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.25"))+
+  geom_line(data=CDM_Lasso_Mean_K5_N1000_Rho050_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.5"))+
+  geom_point(data=CDM_Lasso_Mean_K5_N1000_Rho050_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.5"))+
+  scale_color_manual(name="Rho", values = c("red","blue","green","purple")) )
+
+```
+
+#### N = 2000
+
+Threshold = 0.1
+
+!!! Rho = 0.25 can't be compiled
+
+```{r}
+ggplotly(ggplot() +
+  geom_line(data=CDM_Lasso_Mean_K5_N2000_Rho0_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0"))+
+  geom_point(data=CDM_Lasso_Mean_K5_N2000_Rho0_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0"))+
+  geom_line(data=CDM_Lasso_Mean_K5_N2000_Rho015_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.15"))+
+  geom_point(data=CDM_Lasso_Mean_K5_N2000_Rho015_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.15"))+
+  geom_line(data=CDM_Lasso_Mean_K5_N2000_Rho025_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.25"))+
+  geom_point(data=CDM_Lasso_Mean_K5_N2000_Rho025_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.25"))+
+  geom_line(data=CDM_Lasso_Mean_K5_N2000_Rho050_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.5"))+
+  geom_point(data=CDM_Lasso_Mean_K5_N2000_Rho050_t01_04142022.csv, aes(x=Lambda, y=Similarity, color ="0.5"))+
+  scale_color_manual(name="Rho", values = c("red","blue","green","purple")) )
+```
+
+### TLP {.tabset}
+
+#### N = 1000
+
+Threshold = 0.1
+
+```{r}
+ggplotly(ggplot()+geom_bar(data = CDM_TLP_Mean_K5_N1000_Rho0_t01_04142022.csv,
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Tau)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0"))
+ggplotly(ggplot()+geom_bar(data = CDM_TLP_Mean_K5_N1000_Rho015_t01_04142022.csv,
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Tau)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.15"))
+ggplotly(ggplot()+geom_bar(data = CDM_TLP_Mean_K5_N1000_Rho025_t01_04142022.csv,
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Tau)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.25"))
+ggplotly(ggplot()+geom_bar(data = CDM_TLP_Mean_K5_N1000_Rho050_t01_04142022.csv,
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Tau)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.5"))
+
+```
+
+#### N = 2000
+
+Threshold = 0.1
+
+```{r}
+ggplotly(ggplot()+geom_bar(data = CDM_TLP_Mean_K5_N2000_Rho0_t01_04142022.csv,
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Tau)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0"))
+ggplotly(ggplot()+geom_bar(data = CDM_TLP_Mean_K5_N2000_Rho015_t01_04142022.csv,
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Tau)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.15"))
+ggplotly(ggplot()+geom_bar(data = CDM_TLP_Mean_K5_N2000_Rho025_t01_04142022.csv,
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Tau)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.25"))
+ggplotly(ggplot()+geom_bar(data = CDM_TLP_Mean_K5_N2000_Rho050_t01_04142022.csv,
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Tau)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.5"))
+```
+
+# RBM
+
+## K = 3 {.tabset}
+
+### N = 500
+
+```{r}
+ggplotly(ggplot()+geom_bar(data = RBM_Mean_N500_Rho0_04142022.csv, 
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Eta)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0"))
+ggplotly(ggplot()+geom_bar(data = RBM_Mean_N500_Rho015_04142022.csv, 
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Eta)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.15"))
+ggplotly(ggplot()+geom_bar(data = RBM_Mean_N500_Rho025_04142022.csv, 
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Eta)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.25"))
+ggplotly(ggplot()+geom_bar(data = RBM_Mean_N500_Rho050_04142022.csv, 
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Eta)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.50"))
+
+```
+
+### N = 1000
+
+```{r}
+ggplotly(ggplot()+geom_bar(data = RBM_Mean_N1000_Rho0_04142022.csv, 
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Eta)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0"))
+ggplotly(ggplot()+geom_bar(data = RBM_Mean_N1000_Rho015_04142022.csv, 
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Eta)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.15"))
+ggplotly(ggplot()+geom_bar(data = RBM_Mean_N1000_Rho025_04142022.csv, 
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Eta)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.25"))
+ggplotly(ggplot()+geom_bar(data = RBM_Mean_N1000_Rho050_04142022.csv, 
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Eta)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.50"))
+
+```
+
+### N = 2000
+
+```{r}
+ggplotly(ggplot()+geom_bar(data = RBM_Mean_N2000_Rho0_04142022.csv, 
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Eta)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0"))
+ggplotly(ggplot()+geom_bar(data = RBM_Mean_N2000_Rho015_04142022.csv, 
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Eta)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.15"))
+ggplotly(ggplot()+geom_bar(data = RBM_Mean_N2000_Rho025_04142022.csv, 
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Eta)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.25"))
+ggplotly(ggplot()+geom_bar(data = RBM_Mean_N2000_Rho050_04142022.csv, 
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Eta)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.50"))
+
+```
+
+## K = 4 {.tabset}
+
+### N = 1000
+
+```{r}
+ggplotly(ggplot()+geom_bar(data = RBM_Mean_K4N1000_Rho0_04142022.csv, 
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Eta)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0"))
+ggplotly(ggplot()+geom_bar(data = RBM_Mean_K4N1000_Rho015_04142022.csv, 
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Eta)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.15"))
+ggplotly(ggplot()+geom_bar(data = RBM_Mean_K4N1000_Rho025_04142022.csv, 
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Eta)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.25"))
+ggplotly(ggplot()+geom_bar(data = RBM_Mean_K4N1000_Rho050_04142022.csv, 
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Eta)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.50"))
+```
+
+### N = 2000
+
+```{r}
+ggplotly(ggplot()+geom_bar(data = RBM_Mean_K4N2000_Rho0_04142022.csv, 
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Eta)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0"))
+ggplotly(ggplot()+geom_bar(data = RBM_Mean_K4N2000_Rho015_04142022.csv, 
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Eta)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.15"))
+ggplotly(ggplot()+geom_bar(data = RBM_Mean_K4N2000_Rho025_04142022.csv, 
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Eta)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.25"))
+ggplotly(ggplot()+geom_bar(data = RBM_Mean_K4N2000_Rho050_04142022.csv, 
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Eta)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.50"))
+```
+
+## K = 5 {.tabset}
+
+### N = 1000
+
+```{r}
+ggplotly(ggplot()+geom_bar(data = RBM_Mean_K5N1000_Rho0_04142022.csv, 
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Eta)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0"))
+ggplotly(ggplot()+geom_bar(data = RBM_Mean_K5N1000_Rho015_04142022.csv, 
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Eta)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.15"))
+ggplotly(ggplot()+geom_bar(data = RBM_Mean_K5N1000_Rho025_04142022.csv, 
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Eta)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.25"))
+ggplotly(ggplot()+geom_bar(data = RBM_Mean_K5N1000_Rho050_04142022.csv, 
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Eta)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.50"))
+```
+
+### N = 2000
+
+```{r}
+ggplotly(ggplot()+geom_bar(data = RBM_Mean_K5N2000_Rho0_04142022.csv, 
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Eta)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0"))
+ggplotly(ggplot()+geom_bar(data = RBM_Mean_K5N2000_Rho015_04142022.csv, 
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Eta)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.15"))
+ggplotly(ggplot()+geom_bar(data = RBM_Mean_K5N2000_Rho025_04142022.csv, 
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Eta)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.25"))
+ggplotly(ggplot()+geom_bar(data = RBM_Mean_K5N2000_Rho050_04142022.csv, 
+                           mapping = aes(x = Lambda,y = Similarity, fill = as.factor(Eta)),
+                           stat = "identity", position=position_dodge())+ ggtitle("Rho = 0.50"))
+```
+# Comparing
+
+## K = 3 {.tabset}
+
+### N = 500 ; Rho = 0
+
+```{r}
+data.frame(model      = c("Lasso","TLP","RBM"),
+               Similarity = c(max(CDM_Lasso_Mean_K3_N500_Rho0_t01_04142022.csv$Similarity),
+                              max(CDM_TLP_Mean_K3_N500_Rho0_t01_04142022.csv$Similarity),
+                              max(RBM_Mean_N500_Rho0_04142022.csv$Similarity)))
+```
+
+### N = 500 ; Rho = 0.15
+
+```{r}
+data.frame(model      = c("Lasso","TLP","RBM"),
+               Similarity = c(max(CDM_Lasso_Mean_K3_N500_Rho015_t01_04142022.csv$Similarity),
+                              max(CDM_TLP_Mean_K3_N500_Rho015_t01_04142022.csv$Similarity),
+                              max(RBM_Mean_N500_Rho015_04142022.csv$Similarity)))
+```
+
+### N = 500 ; Rho = 0.25
+
+```{r}
+data.frame(model      = c("Lasso","TLP","RBM"),
+               Similarity = c(max(CDM_Lasso_Mean_K3_N500_Rho025_t01_04142022.csv$Similarity),
+                              max(CDM_TLP_Mean_K3_N500_Rho025_t01_04142022.csv$Similarity),
+                              max(RBM_Mean_N500_Rho025_04142022.csv$Similarity)))
+```
+### N = 500 ; Rho = 0.5
+
+```{r}
+data.frame(model      = c("Lasso","TLP","RBM"),
+               Similarity = c(max(CDM_Lasso_Mean_K3_N500_Rho050_t01_04142022.csv$Similarity),
+                              max(CDM_TLP_Mean_K3_N500_Rho050_t01_04142022.csv$Similarity),
+                              max(RBM_Mean_N500_Rho050_04142022.csv$Similarity)))
+```
+
+
+### N = 1000 ; Rho = 0
+
+```{r}
+data.frame(model      = c("Lasso","TLP","RBM"),
+               Similarity = c(max(CDM_Lasso_Mean_K3_N1000_Rho0_t01_04142022.csv$Similarity),
+                              max(CDM_TLP_Mean_K3_N1000_Rho0_t01_04142022.csv$Similarity),
+                              max(RBM_Mean_N1000_Rho0_04142022.csv$Similarity)))
+```
+
+### N = 1000 ; Rho = 0.15
+
+```{r}
+data.frame(model      = c("Lasso","TLP","RBM"),
+               Similarity = c(max(CDM_Lasso_Mean_K3_N1000_Rho015_t01_04142022.csv$Similarity),
+                              max(CDM_TLP_Mean_K3_N1000_Rho015_t01_04142022.csv$Similarity),
+                              max(RBM_Mean_N1000_Rho015_04142022.csv$Similarity)))
+```
+
+### N = 1000 ; Rho = 0.25
+
+```{r}
+data.frame(model      = c("Lasso","TLP","RBM"),
+               Similarity = c(max(CDM_Lasso_Mean_K3_N1000_Rho025_t01_04142022.csv$Similarity),
+                              max(CDM_TLP_Mean_K3_N1000_Rho025_t01_04142022.csv$Similarity),
+                              max(RBM_Mean_N1000_Rho025_04142022.csv$Similarity)))
+```
+### N = 1000 ; Rho = 0.5
+
+```{r}
+data.frame(model      = c("Lasso","TLP","RBM"),
+               Similarity = c(max(CDM_Lasso_Mean_K3_N1000_Rho050_t01_04142022.csv$Similarity),
+                              max(CDM_TLP_Mean_K3_N1000_Rho050_t01_04142022.csv$Similarity),
+                              max(RBM_Mean_N1000_Rho050_04142022.csv$Similarity)))
+```
+
+### N = 2000 ; Rho = 0
+
+```{r}
+data.frame(model      = c("Lasso","TLP","RBM"),
+               Similarity = c(max(CDM_Lasso_Mean_K3_N2000_Rho0_t01_04142022.csv$Similarity),
+                              max(CDM_TLP_Mean_K3_N2000_Rho0_t01_04142022.csv$Similarity),
+                              max(RBM_Mean_N2000_Rho0_04142022.csv$Similarity)))
+```
+
+### N = 2000 ; Rho = 0.15
+
+```{r}
+data.frame(model      = c("Lasso","TLP","RBM"),
+               Similarity = c(max(CDM_Lasso_Mean_K3_N2000_Rho015_t01_04142022.csv$Similarity),
+                              max(CDM_TLP_Mean_K3_N2000_Rho015_t01_04142022.csv$Similarity),
+                              max(RBM_Mean_N2000_Rho015_04142022.csv$Similarity)))
+```
+
+### N = 2000 ; Rho = 0.25
+
+```{r}
+data.frame(model      = c("Lasso","TLP","RBM"),
+               Similarity = c(max(CDM_Lasso_Mean_K3_N2000_Rho025_t01_04142022.csv$Similarity),
+                              max(CDM_TLP_Mean_K3_N2000_Rho025_t01_04142022.csv$Similarity),
+                              max(RBM_Mean_N2000_Rho025_04142022.csv$Similarity)))
+```
+### N = 2000 ; Rho = 0.5
+
+```{r}
+data.frame(model      = c("Lasso","TLP","RBM"),
+               Similarity = c(max(CDM_Lasso_Mean_K3_N2000_Rho050_t01_04142022.csv$Similarity),
+                              max(CDM_TLP_Mean_K3_N2000_Rho050_t01_04142022.csv$Similarity),
+                              max(RBM_Mean_N2000_Rho050_04142022.csv$Similarity)))
+```
+## K = 4 {.tabset}
+
+### N = 1000 ; Rho = 0
+
+```{r}
+data.frame(model      = c("Lasso","TLP","RBM"),
+               Similarity = c(max(CDM_Lasso_Mean_K4_N1000_Rho0_t01_04142022.csv$Similarity),
+                              max(CDM_TLP_Mean_K4_N1000_Rho0_t01_04142022.csv$Similarity),
+                              max(RBM_Mean_K4N1000_Rho0_04142022.csv$Similarity)))
+```
+
+### N = 1000 ; Rho = 0.15
+
+```{r}
+data.frame(model      = c("Lasso","TLP","RBM"),
+               Similarity = c(max(CDM_Lasso_Mean_K4_N1000_Rho015_t01_04142022.csv$Similarity),
+                              max(CDM_TLP_Mean_K4_N1000_Rho015_t01_04142022.csv$Similarity),
+                              max(RBM_Mean_K4N1000_Rho015_04142022.csv$Similarity)))
+```
+
+### N = 1000 ; Rho = 0.25
+
+```{r}
+data.frame(model      = c("Lasso","TLP","RBM"),
+               Similarity = c(max(CDM_Lasso_Mean_K4_N1000_Rho025_t01_04142022.csv$Similarity),
+                              max(CDM_TLP_Mean_K4_N1000_Rho025_t01_04142022.csv$Similarity),
+                              max(RBM_Mean_K4N1000_Rho025_04142022.csv$Similarity)))
+```
+### N = 1000 ; Rho = 0.5
+
+```{r}
+data.frame(model      = c("Lasso","TLP","RBM"),
+               Similarity = c(max(CDM_Lasso_Mean_K4_N1000_Rho050_t01_04142022.csv$Similarity),
+                              max(CDM_TLP_Mean_K4_N1000_Rho050_t01_04142022.csv$Similarity),
+                              max(RBM_Mean_K4N1000_Rho050_04142022.csv$Similarity)))
+```
+
+### N = 2000 ; Rho = 0
+
+```{r}
+data.frame(model      = c("Lasso","TLP","RBM"),
+               Similarity = c(max(CDM_Lasso_Mean_K4_N2000_Rho0_t01_04142022.csv$Similarity),
+                              max(CDM_TLP_Mean_K4_N2000_Rho0_t01_04142022.csv$Similarity),
+                              max(RBM_Mean_K4N2000_Rho0_04142022.csv$Similarity)))
+```
+
+### N = 2000 ; Rho = 0.15
+
+```{r}
+data.frame(model      = c("Lasso","TLP","RBM"),
+               Similarity = c(max(CDM_Lasso_Mean_K4_N2000_Rho015_t01_04142022.csv$Similarity),
+                              max(CDM_TLP_Mean_K4_N2000_Rho015_t01_04142022.csv$Similarity),
+                              max(RBM_Mean_K4N2000_Rho015_04142022.csv$Similarity)))
+```
+
+### N = 2000 ; Rho = 0.25
+
+```{r}
+data.frame(model      = c("Lasso","TLP","RBM"),
+               Similarity = c(max(CDM_Lasso_Mean_K4_N2000_Rho025_t01_04142022.csv$Similarity),
+                              max(CDM_TLP_Mean_K4_N2000_Rho025_t01_04142022.csv$Similarity),
+                              max(RBM_Mean_K4N2000_Rho025_04142022.csv$Similarity)))
+```
+### N = 2000 ; Rho = 0.5
+
+```{r}
+data.frame(model      = c("Lasso","TLP","RBM"),
+               Similarity = c(max(CDM_Lasso_Mean_K4_N2000_Rho050_t01_04142022.csv$Similarity),
+                              max(CDM_TLP_Mean_K4_N2000_Rho050_t01_04142022.csv$Similarity),
+                              max(RBM_Mean_K4N2000_Rho050_04142022.csv$Similarity)))
+```
+
+## K = 5 {.tabset}
+
+### N = 1000 ; Rho = 0
+
+```{r}
+data.frame(model      = c("Lasso","TLP","RBM"),
+               Similarity = c(max(CDM_Lasso_Mean_K5_N1000_Rho0_t01_04142022.csv$Similarity),
+                              max(CDM_TLP_Mean_K5_N1000_Rho0_t01_04142022.csv$Similarity),
+                              max(RBM_Mean_K5N1000_Rho0_04142022.csv$Similarity)))
+```
+
+### N = 1000 ; Rho = 0.15
+
+```{r}
+data.frame(model      = c("Lasso","TLP","RBM"),
+               Similarity = c(max(CDM_Lasso_Mean_K5_N1000_Rho015_t01_04142022.csv$Similarity),
+                              max(CDM_TLP_Mean_K5_N1000_Rho015_t01_04142022.csv$Similarity),
+                              max(RBM_Mean_K5N1000_Rho015_04142022.csv$Similarity)))
+```
+
+### N = 1000 ; Rho = 0.25
+
+```{r}
+data.frame(model      = c("Lasso","TLP","RBM"),
+               Similarity = c(max(CDM_Lasso_Mean_K5_N1000_Rho025_t01_04142022.csv$Similarity),
+                              max(CDM_TLP_Mean_K5_N1000_Rho025_t01_04142022.csv$Similarity),
+                              max(RBM_Mean_K5N1000_Rho025_04142022.csv$Similarity)))
+```
+### N = 1000 ; Rho = 0.5
+
+```{r}
+data.frame(model      = c("Lasso","TLP","RBM"),
+               Similarity = c(max(CDM_Lasso_Mean_K5_N1000_Rho050_t01_04142022.csv$Similarity),
+                              max(CDM_TLP_Mean_K5_N1000_Rho050_t01_04142022.csv$Similarity),
+                              max(RBM_Mean_K5N1000_Rho050_04142022.csv$Similarity)))
+```
+
+### N = 2000 ; Rho = 0
+
+```{r}
+data.frame(model      = c("Lasso","TLP","RBM"),
+               Similarity = c(max(CDM_Lasso_Mean_K5_N2000_Rho0_t01_04142022.csv$Similarity),
+                              max(CDM_TLP_Mean_K5_N2000_Rho0_t01_04142022.csv$Similarity),
+                              max(RBM_Mean_K5N2000_Rho0_04142022.csv$Similarity)))
+```
+
+### N = 2000 ; Rho = 0.15
+
+```{r}
+data.frame(model      = c("Lasso","TLP","RBM"),
+               Similarity = c(max(CDM_Lasso_Mean_K5_N2000_Rho015_t01_04142022.csv$Similarity),
+                              max(CDM_TLP_Mean_K5_N2000_Rho015_t01_04142022.csv$Similarity),
+                              max(RBM_Mean_K5N2000_Rho015_04142022.csv$Similarity)))
+```
+
+### N = 2000 ; Rho = 0.25
+
+```{r}
+data.frame(model      = c("Lasso","TLP","RBM"),
+               Similarity = c(max(CDM_Lasso_Mean_K5_N2000_Rho025_t01_04142022.csv$Similarity),
+                              max(CDM_TLP_Mean_K5_N2000_Rho025_t01_04142022.csv$Similarity),
+                              max(RBM_Mean_K5N2000_Rho025_04142022.csv$Similarity)))
+```
+### N = 2000 ; Rho = 0.5
+
+```{r}
+data.frame(model      = c("Lasso","TLP","RBM"),
+               Similarity = c(max(CDM_Lasso_Mean_K5_N2000_Rho050_t01_04142022.csv$Similarity),
+                              max(CDM_TLP_Mean_K5_N2000_Rho050_t01_04142022.csv$Similarity),
+                              max(RBM_Mean_K5N2000_Rho050_04142022.csv$Similarity)))
+```
